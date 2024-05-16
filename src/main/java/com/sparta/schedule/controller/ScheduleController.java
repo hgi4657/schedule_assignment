@@ -6,6 +6,8 @@ import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.service.ScheduleService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api")
@@ -28,6 +30,12 @@ public class ScheduleController {
     @GetMapping("/schedule/{id}")
     public Schedule getScheduleById(@PathVariable Long id) {
         return scheduleService.getScheduleById(id);
+    }
+
+    // 일정 전체 조회 GET
+    @GetMapping("/schedule")
+    public List<ScheduleResponseDto> getSchedule() {
+        return scheduleService.getAllSchedules();
     }
 
 }

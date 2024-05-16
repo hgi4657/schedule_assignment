@@ -20,4 +20,12 @@ public class ScheduleResponseDto {
         this.password = schedule.getPassword();
         this.data = schedule.getData();
     }
+
+    public ScheduleResponseDto(Long id, String title, String content, String manager, String data) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.manager = manager;
+        this.data = data;
+    }
 }

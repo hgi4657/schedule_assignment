@@ -6,6 +6,8 @@ import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ScheduleService {
 
@@ -31,6 +33,11 @@ public class ScheduleService {
     // 일정 선택 조회
     public Schedule getScheduleById(Long id) {
         return scheduleRepository.findById(id);
+    }
+
+    // 일정 전체 조회
+    public List<ScheduleResponseDto> getAllSchedules() {
+        return scheduleRepository.findAll();
     }
 
 }
