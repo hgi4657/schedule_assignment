@@ -28,4 +28,9 @@ public class ScheduleService {
         return scheduleResponseDto;
     }
 
+    // 일정 선택 조회
+    public Schedule getScheduleById(Long id) {
+        return scheduleRepository.findById(id);
+    }
+
 }
