@@ -2,12 +2,9 @@ package com.sparta.schedule.controller;
 
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
+import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.service.ScheduleService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -25,6 +22,12 @@ public class ScheduleController {
     @PostMapping("/schedule")
     public ScheduleResponseDto saveSchedule(@RequestBody ScheduleRequestDto requestDto) {
         return scheduleService.saveSchedule(requestDto);
+    }
+
+    // 일정 선택 조회 GET
+    @GetMapping("/schedule/{id}")
+    public Schedule getScheduleById(@PathVariable Long id) {
+        return scheduleService.getScheduleById(id);
     }
 
 }

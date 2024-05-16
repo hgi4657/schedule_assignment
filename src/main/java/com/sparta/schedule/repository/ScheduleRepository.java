@@ -43,4 +43,26 @@ public class ScheduleRepository {
         return schedule;
     }
 
+
+
+    // 해당 ID 가 있는지 조회
+    public Schedule findById(Long id) {
+        // DB 조회
+        String sql = "SELECT id, title, content, manager, data FROM schedule WHERE id = ?";
+
+        return jdbcTemplate.query(sql, resultSet -> {
+            if(resultSet.next()) {
+                Schedule schedule = new Schedule();
+                schedule.setId(resultSet.getLong("id"));
+                schedule.setTitle(resultSet.getString("title"));
+                schedule.setContent(resultSet.getString("content"));
+                schedule.setManager(resultSet.getString("manager"));
+                schedule.setData(resultSet.getString("data"));
+                return schedule;
+            } else {
+                return null;
+            }
+        }, id);
+    }
+
 }
