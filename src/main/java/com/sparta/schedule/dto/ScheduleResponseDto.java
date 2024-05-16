@@ -1,5 +1,6 @@
 package com.sparta.schedule.dto;
 
+import com.sparta.schedule.entity.Schedule;
 import lombok.Getter;
 
 @Getter
@@ -11,4 +12,12 @@ public class ScheduleResponseDto {
     private String password;  // 비밀번호
     private String data; // 작성일자
 
+    public ScheduleResponseDto(Schedule schedule) {
+        this.id = schedule.getId();
+        this.title = schedule.getTitle();
+        this.content = schedule.getContent();
+        this.manager = schedule.getManager();
+        this.password = schedule.getPassword();
+        this.data = schedule.getData();
+    }
 }
