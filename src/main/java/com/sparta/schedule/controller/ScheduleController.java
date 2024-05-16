@@ -44,5 +44,9 @@ public class ScheduleController {
         return scheduleService.updateSchedule(id, requestDto);
     }
 
-
+    // 일정 삭제 DELETE
+    @DeleteMapping("/schedule/{id}")
+    public Long deleteSchedule(@PathVariable Long id) throws IllegalAccessException {
+        return scheduleService.deleteSchedule(id);
+    }
 }
