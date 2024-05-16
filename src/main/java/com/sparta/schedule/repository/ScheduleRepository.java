@@ -1,7 +1,9 @@
 package com.sparta.schedule.repository;
 
+import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.entity.Schedule;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -54,8 +56,8 @@ public class ScheduleRepository {
         // DB 조회
         String sql = "SELECT id, title, content, manager, data FROM schedule WHERE id = ?";
 
-        return jdbcTemplate.query(sql, resultSet -> {
-            if(resultSet.next()) {
+//        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{id}, (resultSet, rowNum) -> {
                 Schedule schedule = new Schedule();
                 schedule.setId(resultSet.getLong("id"));
                 schedule.setTitle(resultSet.getString("title"));
@@ -63,10 +65,10 @@ public class ScheduleRepository {
                 schedule.setManager(resultSet.getString("manager"));
                 schedule.setData(resultSet.getString("data"));
                 return schedule;
-            } else {
-                return null;
-            }
-        }, id);
+            });
+//        } catch (EmptyResultDataAccessException e) {
+//            throw new IllegalStateException("선택한 ID에 해당하는 일정이 없습니다.", e);
+//        }
     }
 
 
@@ -86,6 +88,12 @@ public class ScheduleRepository {
                 return new ScheduleResponseDto(id, title, content, manager, data);
             }
         });
+    }
+
+    // 수정
+    public void update(long id, ScheduleRequestDto dto) {
+        String sql = "UPDATE schedule SET title = ?, content = ?, manager = ? WHERE id = ?";
+        jdbcTemplate.update(sql, dto.getTitle(), dto.getContent(), dto.getManager(), id);
     }
 
 

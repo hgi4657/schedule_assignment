@@ -28,7 +28,7 @@ public class ScheduleController {
 
     // 일정 선택 조회 GET
     @GetMapping("/schedule/{id}")
-    public Schedule getScheduleById(@PathVariable Long id) {
+    public Schedule getScheduleById(@PathVariable Long id) throws IllegalAccessException {
         return scheduleService.getScheduleById(id);
     }
 
@@ -37,5 +37,12 @@ public class ScheduleController {
     public List<ScheduleResponseDto> getSchedule() {
         return scheduleService.getAllSchedules();
     }
+
+    // 일정 수정 PUT
+    @PutMapping("/schedule/{id}")
+    public Schedule updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto) throws IllegalAccessException {
+        return scheduleService.updateSchedule(id, requestDto);
+    }
+
 
 }

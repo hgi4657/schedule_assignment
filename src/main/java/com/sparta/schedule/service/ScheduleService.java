@@ -7,6 +7,7 @@ import com.sparta.schedule.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ScheduleService {
@@ -38,6 +39,28 @@ public class ScheduleService {
     // 일정 전체 조회
     public List<ScheduleResponseDto> getAllSchedules() {
         return scheduleRepository.findAll();
+    }
+
+    // 일정 수정
+    public Schedule updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) throws IllegalAccessException {
+        Schedule schedule = scheduleRepository.findById(id);
+        if (schedule != null) {
+            scheduleRepository.update(id, scheduleRequestDto);
+            return scheduleRepository.findById(id);
+        } else {
+            throw new IllegalAccessException("선택한 메모는 존재하지 않습니다");
+        }
+
+//        // 안되는 코드
+//        if (schedule != null) {
+//            if (!Objects.equals(schedule.getPassword(), scheduleRequestDto.getPassword())) {
+//                throw new IllegalArgumentException("입력하신 비밀번호가 일치하지 않습니다.");
+//            }
+//            scheduleRepository.update(id, scheduleRequestDto);
+//            return scheduleRepository.findById(id);
+//        } else {
+//            throw new IllegalStateException("선택한 메모는 존재하지 않습니다");
+//        }
     }
 
 }
