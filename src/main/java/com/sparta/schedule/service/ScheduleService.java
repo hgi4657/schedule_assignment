@@ -63,4 +63,14 @@ public class ScheduleService {
 //        }
     }
 
+    // 일정 삭제
+    public Long deleteSchedule(long id) throws IllegalAccessException {
+        Schedule schedule = scheduleRepository.findById(id);
+        if (schedule != null) {
+            scheduleRepository.delete(id);
+            return id;
+        } else {
+            throw new IllegalAccessException("선택한 메모는 존재하지 않습니다");
+        }
+    }
 }

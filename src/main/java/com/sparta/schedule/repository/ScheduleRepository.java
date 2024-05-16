@@ -96,5 +96,9 @@ public class ScheduleRepository {
         jdbcTemplate.update(sql, dto.getTitle(), dto.getContent(), dto.getManager(), id);
     }
 
-
+    // 삭제
+    public void delete(long id) {
+        String sql = "DELETE FROM schedule WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
 }
