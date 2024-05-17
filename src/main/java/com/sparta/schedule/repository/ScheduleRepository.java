@@ -3,6 +3,7 @@ package com.sparta.schedule.repository;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.entity.Schedule;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -53,21 +54,22 @@ public class ScheduleRepository {
     // 해당 ID 가 있는지 조회
     public Schedule findById(Long id) {
         // DB 조회
-        String sql = "SELECT id, title, content, manager, data FROM schedule WHERE id = ?";
+        String sql = "SELECT * FROM schedule WHERE id = ?";
 
-//        try {
+        try {
             return jdbcTemplate.queryForObject(sql, new Object[]{id}, (resultSet, rowNum) -> {
                 Schedule schedule = new Schedule();
                 schedule.setId(resultSet.getLong("id"));
                 schedule.setTitle(resultSet.getString("title"));
                 schedule.setContent(resultSet.getString("content"));
                 schedule.setManager(resultSet.getString("manager"));
+                schedule.setPassword(resultSet.getString("password"));
                 schedule.setData(resultSet.getString("data"));
                 return schedule;
             });
-//        } catch (EmptyResultDataAccessException e) {
-//            throw new IllegalStateException("선택한 ID에 해당하는 일정이 없습니다.", e);
-//        }
+        } catch (EmptyResultDataAccessException e) {
+            throw new IllegalStateException("선택하신 ID 에 해당하는 일정이 존재하지 않습니다.");
+        }
     }
 
 

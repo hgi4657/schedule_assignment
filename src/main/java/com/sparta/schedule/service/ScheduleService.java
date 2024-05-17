@@ -4,9 +4,11 @@ import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.repository.ScheduleRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ScheduleService {
@@ -44,33 +46,22 @@ public class ScheduleService {
     // 일정 수정
     public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) throws IllegalAccessException {
         Schedule schedule = scheduleRepository.findById(id);
-        if (schedule != null) {
-            scheduleRepository.update(id, scheduleRequestDto);
-            return new ScheduleResponseDto(scheduleRepository.findById(id));
-        } else {
-            throw new IllegalAccessException("선택한 메모는 존재하지 않습니다");
-        }
 
-//        // 안되는 코드
-//        if (schedule != null) {
-//            if (!Objects.equals(schedule.getPassword(), scheduleRequestDto.getPassword())) {
-//                throw new IllegalArgumentException("입력하신 비밀번호가 일치하지 않습니다.");
-//            }
-//            scheduleRepository.update(id, scheduleRequestDto);
-//            return scheduleRepository.findById(id);
-//        } else {
-//            throw new IllegalStateException("선택한 메모는 존재하지 않습니다");
-//        }
+        if (!Objects.equals(scheduleRequestDto.getPassword(), schedule.getPassword())) {
+            throw new IllegalAccessException("등록하신 비밀번호와 일치하지 않습니다.");
+        }
+        scheduleRepository.update(id, scheduleRequestDto);
+        return new ScheduleResponseDto(scheduleRepository.findById(id));
     }
 
     // 일정 삭제
-    public Long deleteSchedule(long id) throws IllegalAccessException {
+    public Long deleteSchedule(Long id, String password) throws IllegalAccessException {
         Schedule schedule = scheduleRepository.findById(id);
-        if (schedule != null) {
-            scheduleRepository.delete(id);
-            return id;
-        } else {
-            throw new IllegalAccessException("선택한 메모는 존재하지 않습니다");
+
+        if(!Objects.equals(password, schedule.getPassword())) {
+            throw new IllegalAccessException("등록하신 비밀번호와 일치하지 않습니다.");
         }
+        scheduleRepository.delete(id);
+        return id;
     }
 }

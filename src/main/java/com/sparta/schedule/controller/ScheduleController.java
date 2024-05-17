@@ -44,8 +44,8 @@ public class ScheduleController {
     }
 
     // 일정 삭제 DELETE
-    @DeleteMapping("/schedule/{id}")
-    public Long deleteSchedule(@PathVariable Long id) throws IllegalAccessException {
-        return scheduleService.deleteSchedule(id);
+    @DeleteMapping("/schedule/{id}/{password}")
+    public Long deleteSchedule(@PathVariable Long id, @PathVariable String password) throws IllegalAccessException {
+        return scheduleService.deleteSchedule(id, password);
     }
 }
