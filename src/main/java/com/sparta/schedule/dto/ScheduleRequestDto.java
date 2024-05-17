@@ -11,21 +11,4 @@ public class ScheduleRequestDto {
     private String manager;  // 담당자
     private String password;  // 비밀번호
     private String data; // 작성일자
-
-    public ScheduleRequestDto(Schedule schedule) {
-        this.id = schedule.getId();
-        this.title = schedule.getTitle();
-        this.content = schedule.getContent();
-        this.manager = schedule.getManager();
-        this.password = schedule.getPassword();
-        this.data = schedule.getData();
-    }
-
-    public ScheduleRequestDto(Long id, String title, String content, String manager, String data) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.manager = manager;
-        this.data = data;
-    }
 }
