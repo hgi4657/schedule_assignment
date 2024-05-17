@@ -74,7 +74,7 @@ public class ScheduleRepository {
 
     // 전체 조회
     public List<ScheduleResponseDto> findAll() {
-        String sql = "SELECT * FROM schedule";
+        String sql = "SELECT * FROM schedule ORDER BY data DESC, id DESC";
 
         return jdbcTemplate.query(sql, new RowMapper<ScheduleResponseDto>() {
             @Override
