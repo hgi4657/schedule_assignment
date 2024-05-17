@@ -2,7 +2,6 @@ package com.sparta.schedule.controller;
 
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
-import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.service.ScheduleService;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +27,7 @@ public class ScheduleController {
 
     // 일정 선택 조회 GET
     @GetMapping("/schedule/{id}")
-    public Schedule getScheduleById(@PathVariable Long id) throws IllegalAccessException {
+    public ScheduleResponseDto getScheduleById(@PathVariable Long id) {
         return scheduleService.getScheduleById(id);
     }
 
@@ -40,7 +39,7 @@ public class ScheduleController {
 
     // 일정 수정 PUT
     @PutMapping("/schedule/{id}")
-    public Schedule updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto) throws IllegalAccessException {
+    public ScheduleResponseDto updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto) throws IllegalAccessException {
         return scheduleService.updateSchedule(id, requestDto);
     }
 
