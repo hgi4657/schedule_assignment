@@ -5,6 +5,8 @@ import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,31 +25,36 @@ public class ScheduleController {
 
     // 일정 작성 POST
     @PostMapping("/schedule")
-    public ScheduleResponseDto saveSchedule(@RequestBody ScheduleRequestDto requestDto) {
-        return scheduleService.saveSchedule(requestDto);
+    public ResponseEntity<ScheduleResponseDto> saveSchedule(@RequestBody ScheduleRequestDto requestDto) {
+        ScheduleResponseDto responseDto = scheduleService.saveSchedule(requestDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     // 일정 선택 조회 GET
     @GetMapping("/schedule/{id}")
-    public ScheduleResponseDto getScheduleById(@PathVariable Long id) throws IllegalAccessException {
-        return scheduleService.getScheduleById(id);
+    public ResponseEntity<ScheduleResponseDto> getScheduleById(@PathVariable Long id) throws IllegalAccessException {
+        ScheduleResponseDto responseDto = scheduleService.getScheduleById(id);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     // 일정 전체 조회 GET
-    @GetMapping("/schedule")
-    public List<ScheduleResponseDto> getSchedule() {
-        return scheduleService.getAllSchedules();
+    @GetMapping("/schedules")
+    public ResponseEntity<List<ScheduleResponseDto>> getAllSchedules() {
+        List<ScheduleResponseDto> responseDtos = scheduleService.getAllSchedules();
+        return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
 
     // 일정 수정 PUT
     @PutMapping("/schedule/{id}")
-    public ScheduleResponseDto updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto) throws IllegalAccessException {
-        return scheduleService.updateSchedule(id, requestDto);
+    public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto) throws IllegalAccessException {
+        ScheduleResponseDto responseDto = scheduleService.updateSchedule(id, requestDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     // 일정 삭제 DELETE
     @DeleteMapping("/schedule/{id}")
-    public Long deleteSchedule(@PathVariable Long id, @RequestBody SchedulePasswdDto passwdDto) throws IllegalAccessException {
-        return scheduleService.deleteSchedule(id, passwdDto);
+    public ResponseEntity<Long> deleteSchedule(@PathVariable Long id, @RequestBody SchedulePasswdDto passwdDto) throws IllegalAccessException {
+        Long deletedId = scheduleService.deleteSchedule(id, passwdDto);
+        return new ResponseEntity<>(deletedId, HttpStatus.OK);
     }
 }
