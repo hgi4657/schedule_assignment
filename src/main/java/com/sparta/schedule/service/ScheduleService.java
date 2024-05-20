@@ -1,5 +1,6 @@
 package com.sparta.schedule.service;
 
+import com.sparta.schedule.dto.SchedulePasswdDto;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.entity.Schedule;
@@ -48,17 +49,17 @@ public class ScheduleService {
     public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) throws IllegalAccessException {
         Schedule schedule = findScheduleById(id);
 
-        findScheduleByIdAndPassword(id, scheduleRequestDto.getPassword());
+        checkPasswd(schedule.getPassword(), scheduleRequestDto.getPassword());
 
         schedule.update(scheduleRequestDto);
         return new ScheduleResponseDto(findScheduleById(id));
     }
 
     // 일정 삭제
-    public Long deleteSchedule(Long id, String password) throws IllegalAccessException {
+    public Long deleteSchedule(Long id, SchedulePasswdDto passwdDto) throws IllegalAccessException {
         Schedule schedule = findScheduleById(id);
 
-        findScheduleByIdAndPassword(id, password);
+        checkPasswd(schedule.getPassword(), passwdDto.getPassword());
 
         scheduleRepository.delete(schedule);
         return id;
@@ -70,9 +71,10 @@ public class ScheduleService {
                 new IllegalAccessException("선택한 일정은 존재하지 않습니다."));
     }
 
-    // 해당 ID의 Password 가 일치하는지 확인
-    private Schedule findScheduleByIdAndPassword(Long id, String password) throws IllegalAccessException {
-        return scheduleRepository.findByIdAndPassword(id, password).orElseThrow(() ->
-                new IllegalAccessException("선택한 일정의 비밀번호가 일치하지 않습니다."));
+    // Password 가 일치하는지 확인
+    private void checkPasswd(String password, String passwordDto) throws IllegalAccessException {
+        if (!Objects.equals(password, passwordDto)) {
+            throw new IllegalAccessException("등록하신 비밀번호와 일치하지 않습니다.");
+        }
     }
 }

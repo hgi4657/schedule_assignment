@@ -1,5 +1,6 @@
 package com.sparta.schedule.controller;
 
+import com.sparta.schedule.dto.SchedulePasswdDto;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.service.ScheduleService;
@@ -44,8 +45,8 @@ public class ScheduleController {
     }
 
     // 일정 삭제 DELETE
-    @DeleteMapping("/schedule/{id}/{password}")
-    public Long deleteSchedule(@PathVariable Long id, @PathVariable String password) throws IllegalAccessException {
-        return scheduleService.deleteSchedule(id, password);
+    @DeleteMapping("/schedule/{id}")
+    public Long deleteSchedule(@PathVariable Long id, @RequestBody SchedulePasswdDto passwdDto) throws IllegalAccessException {
+        return scheduleService.deleteSchedule(id, passwdDto);
     }
 }
