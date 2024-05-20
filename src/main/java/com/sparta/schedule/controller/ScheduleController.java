@@ -27,7 +27,7 @@ public class ScheduleController {
 
     // 일정 선택 조회 GET
     @GetMapping("/schedule/{id}")
-    public ScheduleResponseDto getScheduleById(@PathVariable Long id) {
+    public ScheduleResponseDto getScheduleById(@PathVariable Long id) throws IllegalAccessException {
         return scheduleService.getScheduleById(id);
     }
 
