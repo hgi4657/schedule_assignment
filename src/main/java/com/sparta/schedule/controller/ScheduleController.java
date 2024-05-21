@@ -4,7 +4,7 @@ import com.sparta.schedule.dto.SchedulePasswdDto;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.service.ScheduleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +13,10 @@ import java.util.List;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api")
 public class ScheduleController {
-    @Autowired
-    private ScheduleService scheduleService;
-
-    // 생성자
-    public ScheduleController(ScheduleService scheduleService) {
-        this.scheduleService = scheduleService;
-    }
+    private final ScheduleService scheduleService;
 
     // 일정 작성 POST
     @PostMapping("/schedule")

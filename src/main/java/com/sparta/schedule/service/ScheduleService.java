@@ -5,7 +5,7 @@ import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.repository.ScheduleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,14 +13,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class ScheduleService {
-    @Autowired
-    private ScheduleRepository scheduleRepository;
-
-    // 생성자
-    public ScheduleService(ScheduleRepository scheduleRepository) {
-        this.scheduleRepository = scheduleRepository;
-    }
+    private final ScheduleRepository scheduleRepository;
 
     // 일정 작성
     public ScheduleResponseDto saveSchedule(ScheduleRequestDto requestDto) {
