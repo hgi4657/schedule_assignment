@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -24,6 +25,7 @@ public class CommentController {
     }
 
     // 댓글 수정
+    @Transactional
     @PutMapping("/schedule/{scheduleId}/comments/{commentId}")
     public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long scheduleId, @PathVariable Long commentId, @RequestBody @Valid CommentRequestDto commentRequestDto) {
         CommentResponseDto responseDto = commentService.updateComment(scheduleId, commentId, commentRequestDto);
