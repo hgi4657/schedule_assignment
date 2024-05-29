@@ -48,8 +48,9 @@ public class ScheduleController {
 
     // 일정 삭제 DELETE
     @DeleteMapping("/schedule/{id}")
-    public ResponseEntity<Long> deleteSchedule(@PathVariable Long id, @RequestBody SchedulePasswdDto passwdDto) throws IllegalAccessException {
+    public ResponseEntity<String> deleteSchedule(@PathVariable Long id, @RequestBody SchedulePasswdDto passwdDto) throws IllegalAccessException {
         Long deletedId = scheduleService.deleteSchedule(id, passwdDto);
-        return new ResponseEntity<>(deletedId, HttpStatus.OK);
+        String message = "[ ID: " + deletedId + " ] 댓글이 삭제되었습니다.";
+        return ResponseEntity.ok(message);
     }
 }
