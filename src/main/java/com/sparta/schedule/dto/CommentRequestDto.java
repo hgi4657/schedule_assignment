@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentRequestDto {
-    @NotBlank(message = "댓글 내용은 필수 사항입니다.")
+    @NotBlank(message = "[댓글] 내용 입력은 필수 사항입니다.")
     private String content;  // 댓글 내용
-
 }
