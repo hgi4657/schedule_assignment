@@ -30,4 +30,11 @@ public class CommentController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    // 댓글 삭제
+    @DeleteMapping("/schedule/{scheduleId}/comments/{commentId}")
+    public ResponseEntity<String> deleteComment(@PathVariable Long scheduleId, @PathVariable Long commentId) {
+        Long deletedId = commentService.deleteComment(scheduleId, commentId);
+        String message = "[ ID: " + deletedId + " ] 댓글이 삭제되었습니다.";
+        return ResponseEntity.ok(message);
+    }
 }
