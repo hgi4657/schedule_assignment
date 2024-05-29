@@ -28,4 +28,8 @@ public class Comment extends Timestamped {
         this.content = requestDto.getContent();
         this.schedule = schedule;
     }
+
+    public void update(String content) {
+        this.content = content;
+    }
 }
