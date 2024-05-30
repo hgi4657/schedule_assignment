@@ -14,15 +14,26 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
+    // ADMIN_TOKEN
+    private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+
     // 회원가입
     public void signup(SignupRequestDto requestDto) {
-        // 해당 회원이 DB 에 존재하는지 확인 (중복)
-        // 해당 회원의 권한 확인 ?
-        UserRoleEnum role = UserRoleEnum.USER;
+        String username = requestDto.getUsername();
 
-        Optional<User> checkDuplicateUsers = userRepository.findByUsername(requestDto.getUsername());
-        if (checkDuplicateUsers.isPresent()) {
-            throw new IllegalArgumentException("중복된 사용자 이름입니다");
+        // 회원 중복 확인
+        Optional<User> checkUsername = userRepository.findByUsername(username);
+        if (checkUsername.isPresent()) {
+            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
+        }
+
+        // 사용자 ROLE 확인
+        UserRoleEnum role = UserRoleEnum.USER;
+        if (requestDto.isAdmin()) {
+            if (!ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
+                throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
+            }
+            role = UserRoleEnum.ADMIN;
         }
 
         User user = new User(requestDto, role);
