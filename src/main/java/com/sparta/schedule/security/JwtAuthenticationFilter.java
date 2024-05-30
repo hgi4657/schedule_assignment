@@ -51,6 +51,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 
         response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         String errorMessage = "로그인 성공하였습니다.";
         response.getWriter().write(errorMessage);
     }
