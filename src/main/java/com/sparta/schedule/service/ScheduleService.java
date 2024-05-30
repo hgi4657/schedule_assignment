@@ -4,6 +4,7 @@ import com.sparta.schedule.dto.SchedulePasswdDto;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.entity.Schedule;
+import com.sparta.schedule.entity.User;
 import com.sparta.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,9 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
 
     // 일정 작성
-    public ScheduleResponseDto saveSchedule(ScheduleRequestDto requestDto) {
+    public ScheduleResponseDto saveSchedule(ScheduleRequestDto requestDto, User user) {
         // RequestDto -> Entity
-        Schedule schedule = new Schedule(requestDto);
+        Schedule schedule = new Schedule(requestDto, user);
         // DB 저장
         Schedule saveSchedule = scheduleRepository.save(schedule);
         // Entity -> ResponseDto
@@ -42,8 +43,15 @@ public class ScheduleService {
 
     // 일정 수정
     @Transactional
-    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) throws IllegalAccessException {
+    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto, User user) throws IllegalAccessException {
+        // 해당 ID 가 존재하는지 확인
+        // 일정을 작성한 유저와 해당 기능을 요청한 유저가 동일한지 확인
+        // Password 가 일치하는지 확인
         Schedule schedule = findScheduleById(id);
+
+        Long loginUserId = user.getId();
+        Long scheduleUserId = schedule.getUser().getId();
+        reqUserCheck(loginUserId, scheduleUserId);
 
         checkPasswd(schedule.getPassword(), scheduleRequestDto.getPassword());
 
@@ -52,8 +60,16 @@ public class ScheduleService {
     }
 
     // 일정 삭제
-    public Long deleteSchedule(Long id, SchedulePasswdDto passwdDto) throws IllegalAccessException {
+    public Long deleteSchedule(Long id, SchedulePasswdDto passwdDto, User user) throws IllegalAccessException {
+        // 해당 ID 가 존재하는지 확인
+        // 일정을 작성한 유저와 해당 기능을 요청한 유저가 동일한지 확인
+        // Password 가 일치하는지 확인
+
         Schedule schedule = findScheduleById(id);
+
+        Long loginUserId = user.getId();
+        Long scheduleUserId = schedule.getUser().getId();
+        reqUserCheck(loginUserId, scheduleUserId);
 
         checkPasswd(schedule.getPassword(), passwdDto.getPassword());
 
@@ -61,10 +77,18 @@ public class ScheduleService {
         return id;
     }
 
+
     // 해당 ID 가 존재하는지 확인
     private Schedule findScheduleById(Long id) throws IllegalAccessException {
         return scheduleRepository.findById(id).orElseThrow(() ->
                 new IllegalAccessException("선택한 일정은 존재하지 않습니다."));
+    }
+
+    // 일정을 작성한 유저와 해당 기능을 요청한 유저가 동일한지 확인
+    private void reqUserCheck(Long loginUserId, Long scheduleUserId) throws IllegalAccessException {
+        if (!loginUserId.equals(scheduleUserId)) {
+            throw new IllegalAccessException("해당 일정을 작성한 사용자가 아닙니다");
+        }
     }
 
     // Password 가 일치하는지 확인

@@ -24,12 +24,18 @@ public class Schedule extends Timestamped {
     @Column(name = "password", nullable = false)
     private String password;  // 비밀번호
 
-    public Schedule(ScheduleRequestDto scheduleRequestDto) {
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public Schedule(ScheduleRequestDto scheduleRequestDto, User user) {
         this.id = scheduleRequestDto.getId();
         this.title = scheduleRequestDto.getTitle();
         this.content = scheduleRequestDto.getContent();
         this.manager = scheduleRequestDto.getManager();
         this.password = scheduleRequestDto.getPassword();
+        this.user = user;
     }
 
     public void update(ScheduleRequestDto scheduleRequestDto) {
