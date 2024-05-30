@@ -33,7 +33,7 @@ public class CommentController {
     public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long scheduleId,
                                                             @PathVariable Long commentId,
                                                             @RequestBody @Valid CommentRequestDto commentRequestDto,
-                                                            @AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+                                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         CommentResponseDto responseDto = commentService.updateComment(scheduleId, commentId, commentRequestDto, userDetails.getUser());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -42,7 +42,7 @@ public class CommentController {
     @DeleteMapping("/{scheduleId}/comments/{commentId}")
     public ResponseEntity<String> deleteComment(@PathVariable Long scheduleId,
                                                 @PathVariable Long commentId,
-                                                @AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+                                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long deletedId = commentService.deleteComment(scheduleId, commentId, userDetails.getUser());
         String message = "[ ID: " + deletedId + " ] 댓글이 삭제되었습니다.";
         return ResponseEntity.ok(message);

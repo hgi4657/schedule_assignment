@@ -31,7 +31,7 @@ public class CommentService {
 
     // 댓글 수정
     @Transactional
-    public CommentResponseDto updateComment(Long scheduleId, Long commentId, CommentRequestDto commentRequestDto, User user) throws IllegalAccessException {
+    public CommentResponseDto updateComment(Long scheduleId, Long commentId, CommentRequestDto commentRequestDto, User user) {
         // 입력받은 일정 아이디가 DB에 존재하는지 확인
         // 입력받은 댓글 아이디가 DB에 존재하는지 확인
         // 입력받은 일정 아이디와 댓글 아이디가 제대로 맵핑된 것인지 확인
@@ -50,7 +50,7 @@ public class CommentService {
     }
 
     // 댓글 삭제
-    public Long deleteComment(Long scheduleId, Long commentId, User user) throws IllegalAccessException {
+    public Long deleteComment(Long scheduleId, Long commentId, User user) {
         // 입력받은 일정 아이디가 DB에 존재하는지 확인
         // 입력받은 댓글 아이디가 DB에 존재하는지 확인
         // 입력받은 일정 아이디와 댓글 아이디가 제대로 맵핑된 것인지 확인
@@ -89,9 +89,9 @@ public class CommentService {
     }
 
     // 댓글을 입력한 유저와 로그인한 유저가 동일한지 확인
-    private void reqUserCheck(Long loginUserId, Long commentUserId) throws IllegalAccessException {
+    private void reqUserCheck(Long loginUserId, Long commentUserId) {
         if (!loginUserId.equals(commentUserId)) {
-            throw new IllegalAccessException("해당 일정을 작성한 사용자가 아닙니다");
+            throw new IllegalArgumentException("해당 일정을 작성한 사용자가 아닙니다");
         }
     }
 }
