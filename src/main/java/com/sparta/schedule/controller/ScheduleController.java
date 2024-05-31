@@ -30,7 +30,7 @@ public class ScheduleController {
 
     // 일정 선택 조회 GET
     @GetMapping("/schedule/{id}")
-    public ResponseEntity<ScheduleResponseDto> getScheduleById(@PathVariable Long id) throws IllegalAccessException {
+    public ResponseEntity<ScheduleResponseDto> getScheduleById(@PathVariable Long id) {
         ScheduleResponseDto responseDto = scheduleService.getScheduleById(id);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -46,7 +46,7 @@ public class ScheduleController {
     @PutMapping("/schedule/{id}")
     public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long id,
                                                               @RequestBody ScheduleRequestDto requestDto,
-                                                              @AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+                                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
         ScheduleResponseDto responseDto = scheduleService.updateSchedule(id, requestDto, userDetails.getUser());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -55,9 +55,9 @@ public class ScheduleController {
     @DeleteMapping("/schedule/{id}")
     public ResponseEntity<String> deleteSchedule(@PathVariable Long id,
                                                  @RequestBody SchedulePasswdDto passwdDto,
-                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long deletedId = scheduleService.deleteSchedule(id, passwdDto, userDetails.getUser());
-        String message = "[ ID: " + deletedId + " ] 댓글이 삭제되었습니다.";
+        String message = "[ ID: " + deletedId + " ] 일정이 삭제되었습니다.";
         return ResponseEntity.ok(message);
     }
 }

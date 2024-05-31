@@ -31,7 +31,7 @@ public class ScheduleService {
     }
 
     // 일정 선택 조회
-    public ScheduleResponseDto getScheduleById(Long id) throws IllegalAccessException {
+    public ScheduleResponseDto getScheduleById(Long id) {
         Schedule schedule = findScheduleById(id);
         return new ScheduleResponseDto(schedule);
     }
@@ -43,7 +43,7 @@ public class ScheduleService {
 
     // 일정 수정
     @Transactional
-    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto, User user) throws IllegalAccessException {
+    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto, User user) {
         // 해당 ID 가 존재하는지 확인
         // 일정을 작성한 유저와 해당 기능을 요청한 유저가 동일한지 확인
         // Password 가 일치하는지 확인
@@ -60,7 +60,7 @@ public class ScheduleService {
     }
 
     // 일정 삭제
-    public Long deleteSchedule(Long id, SchedulePasswdDto passwdDto, User user) throws IllegalAccessException {
+    public Long deleteSchedule(Long id, SchedulePasswdDto passwdDto, User user) {
         // 해당 ID 가 존재하는지 확인
         // 일정을 작성한 유저와 해당 기능을 요청한 유저가 동일한지 확인
         // Password 가 일치하는지 확인
@@ -79,22 +79,22 @@ public class ScheduleService {
 
 
     // 해당 ID 가 존재하는지 확인
-    private Schedule findScheduleById(Long id) throws IllegalAccessException {
+    private Schedule findScheduleById(Long id) {
         return scheduleRepository.findById(id).orElseThrow(() ->
-                new IllegalAccessException("선택한 일정은 존재하지 않습니다."));
+                new IllegalArgumentException("선택한 일정은 존재하지 않습니다."));
     }
 
     // 일정을 작성한 유저와 해당 기능을 요청한 유저가 동일한지 확인
-    private void reqUserCheck(Long loginUserId, Long scheduleUserId) throws IllegalAccessException {
+    private void reqUserCheck(Long loginUserId, Long scheduleUserId) {
         if (!loginUserId.equals(scheduleUserId)) {
-            throw new IllegalAccessException("해당 일정을 작성한 사용자가 아닙니다");
+            throw new IllegalArgumentException("해당 일정을 작성한 사용자가 아닙니다");
         }
     }
 
     // Password 가 일치하는지 확인
-    private void checkPasswd(String password, String passwordDto) throws IllegalAccessException {
+    private void checkPasswd(String password, String passwordDto) {
         if (!Objects.equals(password, passwordDto)) {
-            throw new IllegalAccessException("등록하신 비밀번호와 일치하지 않습니다.");
+            throw new IllegalArgumentException("등록하신 비밀번호와 일치하지 않습니다.");
         }
     }
 }
