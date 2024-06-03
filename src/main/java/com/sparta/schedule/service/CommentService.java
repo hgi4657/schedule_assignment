@@ -24,9 +24,9 @@ public class CommentService {
         Schedule schedule = findScheduleById(scheduleId);
 
         Comment comment = new Comment(commentRequestDto, schedule, user);
-        commentRepository.save(comment);
+        Comment addComment = commentRepository.save(comment);
 
-        return new CommentResponseDto(comment);
+        return new CommentResponseDto(addComment);
     }
 
     // 댓글 수정
