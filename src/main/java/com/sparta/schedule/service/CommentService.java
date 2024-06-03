@@ -6,7 +6,6 @@ import com.sparta.schedule.entity.Comment;
 import com.sparta.schedule.entity.Schedule;
 import com.sparta.schedule.entity.User;
 import com.sparta.schedule.repository.CommentRepository;
-import com.sparta.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,13 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final ScheduleRepository scheduleRepository;
+    private final ScheduleService scheduleService;
 
     // 댓글 등록
     public CommentResponseDto addComment(Long scheduleId, CommentRequestDto commentRequestDto, User user) {
         // 입력받은 일정 아이디가 DB에 존재하는지 확인
         // 댓글 내용이 공백 or " "이 아닌지 확인
-        Schedule schedule = findScheduleById(scheduleId);
+        Schedule schedule = scheduleService.findScheduleById(scheduleId);
 
         Comment comment = new Comment(commentRequestDto, schedule, user);
         Comment addComment = commentRepository.save(comment);
@@ -36,7 +35,7 @@ public class CommentService {
         // 입력받은 댓글 아이디가 DB에 존재하는지 확인
         // 입력받은 일정 아이디와 댓글 아이디가 제대로 맵핑된 것인지 확인
         // 댓글을 입력한 유저와 로그인한 유저가 동일한지 확인
-        Schedule schedule = findScheduleById(scheduleId);
+        Schedule schedule = scheduleService.findScheduleById(scheduleId);
         Comment comment = findCommentById(commentId);
 
         checkScheduleIdAndCommentId(schedule, comment);
@@ -55,7 +54,7 @@ public class CommentService {
         // 입력받은 댓글 아이디가 DB에 존재하는지 확인
         // 입력받은 일정 아이디와 댓글 아이디가 제대로 맵핑된 것인지 확인
         // 댓글을 입력한 유저와 로그인한 유저가 동일한지 확인
-        Schedule schedule = findScheduleById(scheduleId);
+        Schedule schedule = scheduleService.findScheduleById(scheduleId);
         Comment comment = findCommentById(commentId);
 
         checkScheduleIdAndCommentId(schedule, comment);
@@ -68,12 +67,6 @@ public class CommentService {
         return commentId;
     }
 
-
-    // 입력받은 일정 아이디가 DB에 존재하는지 확인
-    private Schedule findScheduleById(Long scheduleId) {
-        return scheduleRepository.findById(scheduleId).orElseThrow(() ->
-                new NullPointerException("해당 일정은 존재하지 않습니다."));
-    }
 
     // 입력받은 댓글 아이디가 DB에 존재하는지 확인
     private Comment findCommentById(Long commentId) {

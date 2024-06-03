@@ -79,9 +79,9 @@ public class ScheduleService {
 
 
     // 해당 ID 가 존재하는지 확인
-    private Schedule findScheduleById(Long id) {
+    public Schedule findScheduleById(Long id) {
         return scheduleRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("선택한 일정은 존재하지 않습니다."));
+                new NullPointerException("해당 일정은 존재하지 않습니다."));
     }
 
     // 일정을 작성한 유저와 해당 기능을 요청한 유저가 동일한지 확인
