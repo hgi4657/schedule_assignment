@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/schedule")
+@RequestMapping("/api/schedule/{scheduleId}/comments")
 public class CommentController {
     private final CommentService commentService;
 
     // 댓글 등록
-    @PostMapping("/{scheduleId}/comments")
+    @PostMapping
     public ResponseEntity<CommentResponseDto> addComment(@PathVariable Long scheduleId,
                                                          @RequestBody @Valid CommentRequestDto commentRequestDto,
                                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -29,7 +29,7 @@ public class CommentController {
 
     // 댓글 수정
     @Transactional
-    @PutMapping("/{scheduleId}/comments/{commentId}")
+    @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long scheduleId,
                                                             @PathVariable Long commentId,
                                                             @RequestBody @Valid CommentRequestDto commentRequestDto,
@@ -39,7 +39,7 @@ public class CommentController {
     }
 
     // 댓글 삭제
-    @DeleteMapping("/{scheduleId}/comments/{commentId}")
+    @DeleteMapping("/{commentId}")
     public ResponseEntity<String> deleteComment(@PathVariable Long scheduleId,
                                                 @PathVariable Long commentId,
                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
